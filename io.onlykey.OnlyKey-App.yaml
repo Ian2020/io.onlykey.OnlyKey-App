@@ -52,10 +52,14 @@ modules:
       # Build OnlyKey-App and move to /app
       - cd onlykey-app ; npm run release
       - cp -r onlykey-app/tmp/OnlyKey_5.5.0/opt/OnlyKey/. /app
+      # Desktop launcher and icon
+      - mkdir -p /app/share/applications
+      - cp onlykey-app/tmp/OnlyKey_5.5.0/usr/share/applications/OnlyKey.desktop /app/share/applications/io.onlykey.OnlyKey-App.desktop
+      - mkdir -p /app/share/icons/hicolor/128x128/apps
+      - cp onlykey-app/tmp/OnlyKey_5.5.0/opt/OnlyKey/icon.png /app/share/icons/hicolor/128x128/apps/io.onlykey.OnlyKey-App.png
       # Create start script
       - echo "cd /app ; ./nw" > /app/bin/start-onlykey-app 
       - chmod +x /app/bin/start-onlykey-app 
-
       # TODO - FAILS, WHY? WHERE DID WE GET THIS LINE? DO WE NEED LOCALE SUPPORT?
       # To allow separate locales
       #- setup-separate-locales ${FLATPAK_DEST}/onlykey-app
@@ -76,6 +80,8 @@ modules:
       # We patch the release task to remove the part where we make a deb package
       # as we are missing fakeroot tool and its unnecessary
       - { type: "patch", "path": "release-linux.js.patch" }
+      # Patch the deskop launcher to work with flatpak
+      - { type: "patch", "path": "app.desktop.patch" }
       # Add the flatpak-node-generator generated sources.
       - generated-sources.json
       # Add the flatpak-node-generator generated sources for our fork of nw

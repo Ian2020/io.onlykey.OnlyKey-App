@@ -11,6 +11,7 @@ This is an unofficial flatpak build of the [OnlyKey-App](https://github.com/trus
 * [Usage](#usage)
 * [Updating](#updating)
 * [Outstanding Issues](#outstanding-issues)
+* [Known Issues](#known-issues)
 * [License](#license)
 
 <!-- vim-markdown-toc -->
@@ -22,6 +23,12 @@ the app's repo: [#105](https://github.com/trustcrypto/OnlyKey-App/issues/105)
 
 ## Install
 
+Prerequistes:
+
+* flatpak-builder
+
+Steps:
+
 * Checkout this repo at the desired tag for the version of OnlyKey-App you want
   to run, e.g. v5.5.0+1 for OnlyKey-App v5.5.0.
 * Run:
@@ -30,14 +37,14 @@ the app's repo: [#105](https://github.com/trustcrypto/OnlyKey-App/issues/105)
 flatpak-builder --install --user --force-clean build io.onlykey.OnlyKey-App.yaml
 ```
 
-* The OnlyKey-App should now be installed on your system and available as a
-  desktop app. You can also run it from the command line with:
+## Usage
+
+The OnlyKey-App should be installed on your system and available as a desktop
+app with icon. You can also run it from the command line with:
 
 ```bash
 flatpak run io.onlykey.OnlyKey-App
 ```
-
-## Usage
 
 ## Updating
 
@@ -97,6 +104,12 @@ Steps:
   * Inside the working dir run `flatpak-node-generator npm package-lock.json`
   * Take the resulting file `generated-sources.json` and copy into your working dir
     for this repo but rename it `generated-sources-nw.json`
+* Update the version of the NWJS archive we download from
+  [https://dl.nwjs.io](https://dl.nwjs.io) in the manifest:
+  `io.onlykey.OnlyKey-App.yaml`
+* Update the tag of the OnlyKey-App repo we use in source
+  in the manifest and anywhere else the version number appears in there:
+  `io.onlykey.OnlyKey-App.yaml`
 * Now run the steps from the "Install" section above and hope for a successful
   build.
 * Test the app.
@@ -153,6 +166,33 @@ For the future:
 * We're not really using `flatpak-node-generator`'s nwjs support, by which it
   adds a couple extra sources to download and extract nwjs into a known
   location in `generated-sources.json`.
+
+## Known Issues
+
+* The build produces this message:
+
+  ```log
+  ln: failed to create symbolic link 'flatpak-node/cache/node-gyp/18.18.1/include': File exists
+  ```
+
+  ...but it seems to have no ill effect.
+
+* NPM issues some warnings but these need to be addressed upstream:
+
+  ```log
+  npm WARN config production Use `--omit=dev` instead.
+  npm WARN deprecated har-validator@5.1.5: this library is no longer supported
+  npm WARN deprecated uuid@3.4.0: Please upgrade  to version 7 or higher. Older versions may use Math.random() in certain circumstances, which is known to be problematic. See https://v8.dev/blog/math-random for details.
+  npm WARN deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
+  ```
+
+* The desktop file causes a warning:
+
+  ```log
+  WARNING: Failed to validate desktop file /home/busby/.var/build/github.com/io.onlykey.OnlyKey-App/build/export/share/applications/io.onlykey.OnlyKey-App.desktop: /home/busby/.var/build/github.com/io.onlykey.OnlyKey-App/build/export/share/applications/io.onlykey.OnlyKey-App.desktop: error: value "5.5.0" for key "Version" in group "Desktop Entry" is not a known version
+  ```
+
+  ...but it still seems to work.
 
 ## License
 

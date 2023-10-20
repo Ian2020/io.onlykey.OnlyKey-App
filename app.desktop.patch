@@ -1,0 +1,17 @@
+diff --git a/onlykey-app/resources/linux/app.desktop b/onlykey-app/resources/linux/app.desktop
+index fa37a93..d352644 100755
+--- a/onlykey-app/resources/linux/app.desktop
++++ b/onlykey-app/resources/linux/app.desktop
+@@ -1,10 +1,9 @@
+ [Desktop Entry]
+ Version={{version}}
+ Type=Application
+-Encoding=UTF-8
+ Name={{name}}
+ Comment={{description}}
+-Exec=/opt/{{name}}/nw
+-Icon=/opt/{{name}}/icon.png
++Exec=
++Icon=io.onlykey.OnlyKey-App
+ Terminal=false
+ Categories=Utility;
