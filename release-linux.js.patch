@@ -1,0 +1,11 @@
+diff --git a/onlykey-app/tasks/release_linux.js b/onlykey-app/tasks/release_linux.js
+index 4af0e80..1da8f5d 100755
+--- a/onlykey-app/tasks/release_linux.js
++++ b/onlykey-app/tasks/release_linux.js
+@@ -125,6 +125,4 @@ module.exports = function (params) {
+     .then(updateRuntimeFileMode)
+     .then(copyBuiltApp)
+     .then(prepareOsSpecificThings)
+-    .then(packToDebFile)
+-    .then(cleanClutter);
+ };

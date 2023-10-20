@@ -1,0 +1,82 @@
+app-id: io.onlykey.OnlyKey-App
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.node18
+command: start-onlykey-app
+finish-args:
+  # These three lines add the permissions needed for graphics.
+  - --device=dri
+  - --share=ipc
+  - --socket=x11
+  # Sound access.
+  - --socket=pulseaudio
+  # Network access.
+  - --share=network
+  # If you need to access the filesystem, also add:
+  - --filesystem=home
+  # To prevent OnlyKey errors: Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket
+  - --socket=system-bus
+  # Have to allow all device access to get USB devices
+  - --device=all
+modules:
+  # First step is to install Node to /app/node, that way it can be accessible outside of the sdk
+  # environment. install-sdk.sh is used because install.sh omits npm.
+  - name: node
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/node18/install-sdk.sh
+      - echo $PATH
+      - mkdir /app/bin
+      - ln -s /app/node/bin/node /app/bin/node
+  # Now our app
+  - name: onlykey-app
+    buildsystem: simple
+    build-options:
+      # Add the node bin directory.
+      append-path: /usr/lib/sdk/node18/bin
+      env:
+        # Set the cache directory, used to find Electron and some other helper
+        # tools.
+        # (The directory format is: /run/build/MODULE_NAME/flatpak-node/cache)
+        XDG_CACHE_HOME: /run/build/onlykey-app/flatpak-node/cache
+        # Set the npm cache directory, used by npm to find its package metadata.
+        npm_config_cache: /run/build/onlykey-app/flatpak-node/npm-cache
+        # Sets the directory where Node is located so that npm won't download the headers.
+        npm_config_nodedir: /usr/lib/sdk/node18
+        # For npm install of nw we must direct it to local file to install offline
+        # See [nw - npm](https://www.npmjs.com/package/nw)
+        NWJS_URLBASE: file:////run/build/onlykey-app/flatpak-node/nwjs-cache/v
+    build-commands:
+      # Build OnlyKey-App and move to /app
+      - cd onlykey-app ; npm run release
+      - cp -r onlykey-app/tmp/OnlyKey_5.5.0/opt/OnlyKey/. /app
+      # Create start script
+      - echo "cd /app ; ./nw" > /app/bin/start-onlykey-app 
+      - chmod +x /app/bin/start-onlykey-app 
+
+      # TODO - FAILS, WHY? WHERE DID WE GET THIS LINE? DO WE NEED LOCALE SUPPORT?
+      # To allow separate locales
+      #- setup-separate-locales ${FLATPAK_DEST}/onlykey-app
+    sources:
+      - type: git
+        url: https://github.com/trustcrypto/OnlyKey-App.git
+        tag: v5.5.0
+        commit: 5401c2966638d04c19035fff85e95bfd3bce5511
+        # Checkout into a subdirectory so we can copy the whole thing to /app.
+        dest: onlykey-app
+      # Patching package-lock.json must come before generated-sources as that
+      # contains a script that patches package and package-lock files due to
+      # the git ref to our fork of `nw`. Also the OnlyKey-App repo is missing a
+      # package-lock.json.
+      - { type: "patch", "path": "package-lock.json.patch" }
+      # We must also patch package.json as we are using a fork of nw
+      - { type: "patch", "path": "package.json.patch" }
+      # We patch the release task to remove the part where we make a deb package
+      # as we are missing fakeroot tool and its unnecessary
+      - { type: "patch", "path": "release-linux.js.patch" }
+      # Add the flatpak-node-generator generated sources.
+      - generated-sources.json
+      # Add the flatpak-node-generator generated sources for our fork of nw
+      - generated-sources-nw.json

@@ -1,0 +1,13 @@
+diff --git a/onlykey-app/package.json b/onlykey-app/package.json
+index b29e2b6..643d5fc 100644
+--- a/onlykey-app/package.json
++++ b/onlykey-app/package.json
+@@ -22,7 +22,7 @@
+   "dependencies": {
+     "auto-launch": "^5.0.5",
+     "js-sha256": "^0.9.0",
+-    "nw": "^0.71.1",
++    "nw": "git+https://git@github.com/Ian2020/npm-installer.git#8e1575a4abf16901924a6146835334ddeaa17b14",
+     "nw-autoupdater": "^1.1.11",
+     "request": "^2.88.2",
+     "sshpk": "^1.17.0"
