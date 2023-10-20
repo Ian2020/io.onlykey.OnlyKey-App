@@ -1,5 +1,3 @@
-# README
-
 This is an unofficial flatpak build of the [OnlyKey-App](https://github.com/trustcrypto/OnlyKey-App).
 
 ## Table of Contents
@@ -115,6 +113,13 @@ Steps:
 * Test the app.
 * Commit your changes and tag with the version of OnlyKey-App and a numbered
   suffix for our own versioning e.g. v5.5.0+1.
+
+  ```bash
+  git tag v5.5.0+1
+  git push --tags
+  ```
+
+  Make a release on GitHub's website.
 
 ## Outstanding Issues
 
