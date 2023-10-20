@@ -80,3 +80,10 @@ modules:
       - generated-sources.json
       # Add the flatpak-node-generator generated sources for our fork of nw
       - generated-sources-nw.json
+      # For the nw package's installer to succeed offline we must ut the archive
+      # where it expects it and set NWJS_URLBASE (above)
+      - { "type": "file",
+          "url": "https://dl.nwjs.io/v0.71.1/nwjs-v0.71.1-linux-x64.tar.gz",
+          "sha256": "6e739ba707c9e9234974ebf35939e1e75e4931c69d1f5f9fc71e56f5ee2097fe",
+          "dest-filename": "nwjs-v0.71.1-linux-x64.tar.gz",
+          "dest": "flatpak-node/nwjs-cache/v0.71.1" }

@@ -18,13 +18,90 @@ This is an unofficial flatpak build of the [OnlyKey-App](https://github.com/trus
 ## Background
 
 I was keen to get a flatpak for the Onlykey App and it's an outstanding issue on
-the app's repo: [Provide a Flatpak as software package for Linux · Issue #105 · trustcrypto/OnlyKey-App](https://github.com/trustcrypto/OnlyKey-App/issues/105)
+the app's repo: [#105](https://github.com/trustcrypto/OnlyKey-App/issues/105)
 
 ## Install
+
+* Checkout this repo at the desired tag for the version of OnlyKey-App you want
+  to run, e.g. v5.5.0+1 for OnlyKey-App v5.5.0.
+* Run:
+
+```bash
+flatpak-builder --install --user --force-clean build io.onlykey.OnlyKey-App.yaml
+```
+
+* The OnlyKey-App should now be installed on your system and available as a
+  desktop app. You can also run it from the command line with:
+
+```bash
+flatpak run io.onlykey.OnlyKey-App
+```
 
 ## Usage
 
 ## Updating
+
+These instructions are for updating the version of OnlyKey-App in the flatpak
+built by this repo.
+
+Prerequisites:
+
+* Node and npm
+* `flatpak-node-generator` from [flatpak-builder-tools/node](https://github.com/flatpak/flatpak-builder-tools/tree/master/node)
+  including patches:
+  * [node: Correct the LocalSource check for npm provider by Ian2020 · Pull
+    Request #378 ·
+    flatpak/flatpak-builder-tools](https://github.com/flatpak/flatpak-builder-tools/pull/378)
+  * As yet unsubmitted PR to add support for git dependencies
+* Before you start make a note of what version of OnlyKey-App you're building
+  and what version of NWJS it uses (`NWJS_VER` below).
+
+Steps:
+
+* Checkout [trustcrypto/OnlyKey-App](https://github.com/trustcrypto/OnlyKey-App/)
+  at the relevant tag for the new version you want to build.
+  * If we still need to use our npm-installer fork (see outstanding issues
+    below) we need to replace the nw dependency with the correct commit or of
+    our fork. This depends on the version of NWJS needed and work may required
+    in this repo first to bring it up to date also. Here's the right command for
+    NWJS 0.71.1:
+
+    ```bash
+    npm uninstall nw
+    npm install git+https://git@github.com/Ian2020/npm-installer.git#8e1575a4abf16901924a6146835334ddeaa17b14
+    ```
+
+  * If there is no `package-lock.json` in the repo (an outstanding issue below)
+    run `npm install` to generate one (the above step may have already generated
+    it though).
+  * Run `flatpak-node-generator --nwjs-version $NWJS_VER npm package-lock.json`
+    replacing `$NWJS_VER` with whatever OnlyKey-App uses.
+  * Take the resulting file `generated-sources.json` and copy into your working dir
+    of this repo.
+    * Replace any occurences of `FLATPAK_BUILDER_BUILDDIR/package` with
+      `FLATPAK_BUILDER_BUILDDIR/onlykey-app/package`. This step will not be
+      necessary once we're no longer using our npm-installer fork.
+  * Create patch files for `package.json` and `package-lock.json` using `git
+    diff package.json | cat` or similar and copy into the working dir of this
+    repo (replacing `package.json.patch` and `package-lock.json`).
+    * Replace any occurences of `/package` with `/onlykey-app/package`. Again
+      this step will not be necessary once we're no longer forking and it the
+      OnlyKey-App repo has its own package-lock upstream.
+* If we still need to use our npm-installer fork (see outstanding issues below)
+  then we also need to generate sources for it. This is because as a git
+  dependency of OnlyKey-App npm will have to build it first and therefore we
+  need it sources too. Checkout the branch that matches the required version of
+  NWJS that OnlyKey-App uses e.g.
+  [v0.71.1](https://github.com/Ian2020/npm-installer/tree/v0.71.1). If
+  a version is missing then work will be needed there first.
+  * Inside the working dir run `flatpak-node-generator npm package-lock.json`
+  * Take the resulting file `generated-sources.json` and copy into your working dir
+    for this repo but rename it `generated-sources-nw.json`
+* Now run the steps from the "Install" section above and hope for a successful
+  build.
+* Test the app.
+* Commit your changes and tag with the version of OnlyKey-App and a numbered
+  suffix for our own versioning e.g. v5.5.0+1.
 
 ## Outstanding Issues
 
@@ -45,7 +122,7 @@ The first two relate to flatpak's requirement to build without network access.
    In the meantime we use our own fork: [Ian2020/npm-installer at
    v0.71.1](https://github.com/Ian2020/npm-installer/tree/v0.71.1).
    This forces us to patch `package.json` and `package-lock.json` to point to
-   our fork as a git dependency until the issue is resolved upstream.
+   our fork as an npm git dependency until the issue is resolved upstream.
 
 The next are around the use of the
 [flatpak-builder-tools/node](https://github.com/flatpak/flatpak-builder-tools/tree/master/node)
@@ -63,13 +140,19 @@ the generate sources for the flatpak manifest.
    is that is does not support the git dependency we use in (2) above. We have a
    fix for that but it's not yet a PR.
 
-The final is around OnlyKey App's build process:
+The final minor issue is around OnlyKey App's build process:
 
 5. The OnlyKey gulp linux release task creates a .deb in a tmp dir and then
-   deletes all the artifacts. We have to patch out the deb creation (as it fails
-   in our environment) and we need the artifacts to finish building the flatpak.
-   Perhaps in future we could have a dedicated flatpak release task in the
-   OnlyKey-App repo upstream to rely on.
+   deletes all the artifacts. We need to skip the deb creation (as it fails in
+   our flatpak environment) and we need the artifacts to finish building the
+   flatpak. Perhaps in future we could have a dedicated flatpak release task in
+   the OnlyKey-App repo upstream.
+
+For the future:
+
+* We're not really using `flatpak-node-generator`'s nwjs support, by which it
+  adds a couple extra sources to download and extract nwjs into a known
+  location in `generated-sources.json`.
 
 ## License
 
