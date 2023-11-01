@@ -1,25 +1,5 @@
 [
     {
-        "type": "archive",
-        "url": "https://dl.nwjs.io/v0.71.1/nwjs-v0.71.1-linux-ia32.tar.gz",
-        "strip-components": 1,
-        "sha256": "7e9c3f1b8c5e9fad6a5d7c37c2a4ddb4cbcb8759db42ffb93ff71db59df525cb",
-        "dest": "flatpak-node/nwjs-cache/0.71.1-normal/linux32",
-        "only-arches": [
-            "i386"
-        ]
-    },
-    {
-        "type": "archive",
-        "url": "https://dl.nwjs.io/v0.71.1/nwjs-v0.71.1-linux-x64.tar.gz",
-        "strip-components": 1,
-        "sha256": "6e739ba707c9e9234974ebf35939e1e75e4931c69d1f5f9fc71e56f5ee2097fe",
-        "dest": "flatpak-node/nwjs-cache/0.71.1-normal/linux64",
-        "only-arches": [
-            "x86_64"
-        ]
-    },
-    {
         "type": "file",
         "url": "https://registry.npmjs.org/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz",
         "sha512": "d588ecd92bccf137e5111fce0f770e8e15963996f9f00dadef0a44d92f577c161388897e5c58501b66e3cb83eed48f8402508d533443603745c056142af5dc20",
@@ -4710,12 +4690,6 @@
     },
     {
         "type": "inline",
-        "contents": "0.71.1",
-        "dest-filename": "nwjs-version",
-        "dest": "flatpak-node"
-    },
-    {
-        "type": "inline",
         "contents": "002da450485a0e41c268f83ca9e1b6c0fa78de4a\t{\"key\": \"make-fetch-happen:request-cache:https://registry.npmjs.org/define-data-property/-/define-data-property-1.1.1.tgz\", \"integrity\": \"sha512-E7uGkTzkk1d0ByLeSc6ZsFS79Axg+m1P/VsgYsxHgiuc3tFSj+MjMIwe90FC4lOAZzNBdY7kkO2P2wKdsQ1vgQ==\", \"time\": 0, \"size\": 8435, \"metadata\": {\"url\": \"https://registry.npmjs.org/define-data-property/-/define-data-property-1.1.1.tgz\", \"reqHeaders\": {}, \"resHeaders\": {}}}",
         "dest-filename": "bf722ce611a5fa7cc26c36c6deea02ff9f109d635b16b2db7338702e47c3",
         "dest": "flatpak-node/npm-cache/_cacache/index-v5/27/de"
@@ -8739,7 +8713,7 @@
     {
         "type": "script",
         "commands": [
-            "jq --arg buildroot \"$FLATPAK_BUILDER_BUILDDIR\" --argjson data '{\"git+https://git@github.com/Ian2020/npm-installer.git#8e1575a4abf16901924a6146835334ddeaa17b14\": \"flatpak-node/git-packages/nw-8e1575a4abf16901924a6146835334ddeaa17b14#8e1575a4abf16901924a6146835334ddeaa17b14\", \"https://git@github.com/Ian2020/npm-installer.git#8e1575a4abf16901924a6146835334ddeaa17b14\": \"flatpak-node/git-packages/nw-8e1575a4abf16901924a6146835334ddeaa17b14#8e1575a4abf16901924a6146835334ddeaa17b14\"}' 'walk(    if type == \"object\"    then        to_entries | map(            if (.value | type == \"string\") and $data[.value]            then .value = \"git+file:\\($buildroot)/\\($data[.value])\"            else .            end        ) | from_entries    else .    end)' $FLATPAK_BUILDER_BUILDDIR/onlykey-app/package.json > $FLATPAK_BUILDER_BUILDDIR/onlykey-app/package.json.new",
+            "jq --arg buildroot \"$FLATPAK_BUILDER_BUILDDIR\" --argjson data '{\"git+https://git@github.com/Ian2020/npm-installer.git\": \"flatpak-node/git-packages/nw-8e1575a4abf16901924a6146835334ddeaa17b14#8e1575a4abf16901924a6146835334ddeaa17b14\", \"https://git@github.com/Ian2020/npm-installer.git\": \"flatpak-node/git-packages/nw-8e1575a4abf16901924a6146835334ddeaa17b14#8e1575a4abf16901924a6146835334ddeaa17b14\"}' 'walk(    if type == \"object\"    then        to_entries | map(            if (.value | type == \"string\") and $data[.value]            then .value = \"git+file:\\($buildroot)/\\($data[.value])\"            else .            end        ) | from_entries    else .    end)' $FLATPAK_BUILDER_BUILDDIR/onlykey-app/package.json > $FLATPAK_BUILDER_BUILDDIR/onlykey-app/package.json.new",
             "mv $FLATPAK_BUILDER_BUILDDIR/onlykey-app/package.json{.new,}",
             "jq --arg buildroot \"$FLATPAK_BUILDER_BUILDDIR\" --argjson data '{\"git+https://git@github.com/Ian2020/npm-installer.git#8e1575a4abf16901924a6146835334ddeaa17b14\": \"flatpak-node/git-packages/nw-8e1575a4abf16901924a6146835334ddeaa17b14#8e1575a4abf16901924a6146835334ddeaa17b14\", \"https://git@github.com/Ian2020/npm-installer.git#8e1575a4abf16901924a6146835334ddeaa17b14\": \"flatpak-node/git-packages/nw-8e1575a4abf16901924a6146835334ddeaa17b14#8e1575a4abf16901924a6146835334ddeaa17b14\"}' 'walk(    if type == \"object\" and (.version | type == \"string\") and $data[.version]    then        .version = \"git+file:\\($buildroot)/\\($data[.version])\"    else .    end)' $FLATPAK_BUILDER_BUILDDIR/onlykey-app/package-lock.json > $FLATPAK_BUILDER_BUILDDIR/onlykey-app/package-lock.json.new",
             "mv $FLATPAK_BUILDER_BUILDDIR/onlykey-app/package-lock.json{.new,}"

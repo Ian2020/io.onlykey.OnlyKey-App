@@ -28,7 +28,8 @@ Prerequistes:
 Steps:
 
 * Checkout this repo at the desired tag for the version of OnlyKey-App you want
-  to run, e.g. v5.5.0+1 for OnlyKey-App v5.5.0.
+  to run, e.g. v5.5.0+1 for OnlyKey-App v5.5.0. The `+N` suffix allow us to
+  give this repo it own version number but still tie it to OnlyKey's version.
 * Run:
 
 ```bash
@@ -59,7 +60,7 @@ Prerequisites:
     flatpak/flatpak-builder-tools](https://github.com/flatpak/flatpak-builder-tools/pull/378)
   * As yet unsubmitted PR to add support for git dependencies
 * Before you start make a note of what version of OnlyKey-App you're building
-  and what version of NWJS it uses (`NWJS_VER` below).
+  and what version of NWJS it uses.
 
 Steps:
 
@@ -79,8 +80,7 @@ Steps:
   * If there is no `package-lock.json` in the repo (an outstanding issue below)
     run `npm install` to generate one (the above step may have already generated
     it though).
-  * Run `flatpak-node-generator --nwjs-version $NWJS_VER npm package-lock.json`
-    replacing `$NWJS_VER` with whatever OnlyKey-App uses.
+  * Run `flatpak-node-generator npm package-lock.json`
   * Take the resulting file `generated-sources.json` and copy into your working dir
     of this repo.
     * Replace any occurences of `FLATPAK_BUILDER_BUILDDIR/package` with

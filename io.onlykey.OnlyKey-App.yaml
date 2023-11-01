@@ -82,11 +82,11 @@ modules:
       - { type: "patch", "path": "release-linux.js.patch" }
       # Patch the deskop launcher to work with flatpak
       - { type: "patch", "path": "app.desktop.patch" }
-      # Add the flatpak-node-generator generated sources.
-      - generated-sources.json
       # Add the flatpak-node-generator generated sources for our fork of nw
       - generated-sources-nw.json
-      # For the nw package's installer to succeed offline we must ut the archive
+      # Add the flatpak-node-generator generated sources.
+      - generated-sources.json
+      # For the nw package's installer to succeed offline we must put the archive
       # where it expects it and set NWJS_URLBASE (above)
       - { "type": "file",
           "url": "https://dl.nwjs.io/v0.71.1/nwjs-v0.71.1-linux-x64.tar.gz",
