@@ -183,7 +183,7 @@ the generate sources for the flatpak manifest.
 4. A second issue with
    [flatpak-builder-tools/node](https://github.com/flatpak/flatpak-builder-tools/tree/master/node)
    is that is does not support the git dependency we use in (2) above. We have a
-   fix for that but it's not yet a PR.
+   fix for that: [#382](https://github.com/flatpak/flatpak-builder-tools/pull/382)
 
 The final minor issue is around OnlyKey App's build process:
 
