@@ -24,17 +24,36 @@ the app's repo: [#105](https://github.com/trustcrypto/OnlyKey-App/issues/105)
 Prerequistes:
 
 * flatpak-builder
+* Base runtime, SDK and node extension from flathub:
+
+```bash
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install org.freedesktop.Sdk//23.08 \
+                org.freedesktop.Sdk.Extension.node18//23.08 \
+                org.freedesktop.Platform//23.08
+```
 
 Steps:
 
 * Checkout this repo at the desired tag for the version of OnlyKey-App you want
   to run, e.g. v5.5.0+1 for OnlyKey-App v5.5.0. The `+N` suffix allow us to
   give this repo it own version number but still tie it to OnlyKey's version.
+
 * Run:
 
 ```bash
 flatpak-builder --install --user --force-clean build io.onlykey.OnlyKey-App.yaml
 ```
+
+You might see this:
+
+```bash
+Failed to download sources: module onlykey-app: Transferred a partial file
+```
+
+Just re-run the command, it's some kind of rate-limit on downloading
+dependencies for the build I think. Each time you run a build we use a cache
+so you won't have to re-download things that were already successfully obtained.
 
 ## Usage
 
@@ -44,6 +63,11 @@ app with icon. You can also run it from the command line with:
 ```bash
 flatpak run io.onlykey.OnlyKey-App
 ```
+
+Note you still need to follow the other Linux install instructions to get your
+device working in full: [Using OnlyKey with
+Linux](https://docs.onlykey.io/linux.html). In particular make sure you have
+setup the UDEV rule.
 
 ## Updating
 
