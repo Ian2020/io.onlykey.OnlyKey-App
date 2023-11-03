@@ -86,7 +86,8 @@ Prerequisites:
     #382 ·
     flatpak/flatpak-builder-tools](https://github.com/flatpak/flatpak-builder-tools/pull/382)
   * Until these PRs are accepted you can use my fork that combines them in
-    branch `npm+gitrefs`: `git clone -b git@github.com:Ian2020/flatpak-builder-tools.git`
+    branch `npm+gitrefs`:
+    `git clone -b npm+gitrefs git@github.com:Ian2020/flatpak-builder-tools.git`
 * Before you start make a note of what version of OnlyKey-App you're building
   and what version of NWJS it uses.
 
