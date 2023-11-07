@@ -198,6 +198,9 @@ For the future:
 * We're not really using `flatpak-node-generator`'s nwjs support, by which it
   adds a couple extra sources to download and extract nwjs into a known
   location in `generated-sources.json`.
+* We are not dealing with different architectures
+* We are not dealing with different locales
+* Do we have a truly minimal flatpak?
 
 ## Known Issues
 
