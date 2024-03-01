@@ -221,12 +221,6 @@ For the future:
   npm WARN deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
   ```
 
-* The desktop file causes a warning:
-
-  ```log
-  WARNING: Failed to validate desktop file /home/busby/.var/build/github.com/io.onlykey.OnlyKey-App/build/export/share/applications/io.onlykey.OnlyKey-App.desktop: /home/busby/.var/build/github.com/io.onlykey.OnlyKey-App/build/export/share/applications/io.onlykey.OnlyKey-App.desktop: error: value "5.5.0" for key "Version" in group "Desktop Entry" is not a known version
-  ```
-
   ...but it still seems to work.
 
 ## License
