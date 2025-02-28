@@ -107,18 +107,20 @@ Steps:
     run `npm install` to generate one (the above step may have already generated
     it though).
 
-  - Run `flatpak-node-generator npm package-lock.json`
+  - Run `flatpak-node-generator npm package-lock.json`. The project uses poetry
+    so with that installed you can run `poetry install` then use the resulting
+    `.venv` virtual environment to run it.
 
   - Take the resulting file `generated-sources.json` and copy into your working dir
     of this repo.
 
-    - Replace any occurences of `FLATPAK_BUILDER_BUILDDIR/package` with
+    - Replace any occurrences of `FLATPAK_BUILDER_BUILDDIR/package` with
       `FLATPAK_BUILDER_BUILDDIR/onlykey-app/package`.
 
   - Create patch files for `package.json` and `package-lock.json` using `git diff package.json | cat` or similar and copy into the working dir of this
     repo (replacing `package.json.patch` and `package-lock.json.patch`).
 
-    - Replace any occurences in those files of `/package` with `/onlykey-app/package`.
+    - Replace any occurrences in those files of `/package` with `/onlykey-app/package`.
 
 - If we still need to use our npm-installer fork (see outstanding issues below)
   then we also need to generate sources for it. This is because as a git
@@ -146,8 +148,8 @@ Steps:
 
 - Test the app.
 
-- Commit your changes and tag with the version of OnlyKey-App and a numbered
-  suffix for our own versioning e.g. v5.5.0+1.
+- Update the CHANGELOG and commit your changes and tag with the version of
+  OnlyKey-App and a numbered suffix for our own versioning e.g. v5.5.0+1.
 
   ```bash
   git tag v5.5.0+1
