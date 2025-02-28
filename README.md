@@ -153,6 +153,7 @@ Steps:
 
   ```bash
   git tag v5.5.0+1
+  git push
   git push --tags
   ```
 
