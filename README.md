@@ -73,17 +73,10 @@ built by this repo.
 Prerequisites:
 
 - Node and npm
-- `flatpak-node-generator` from [flatpak-builder-tools/node](https://github.com/flatpak/flatpak-builder-tools/tree/master/node)
-  including patches:
-  - [node: Correct the LocalSource check for npm provider by Ian2020 · Pull
-    Request #378 ·
-    flatpak/flatpak-builder-tools](https://github.com/flatpak/flatpak-builder-tools/pull/378)
-  - [\[node\] support git sources in lockfile v2 format by Ian2020 · Pull Request
-    #382 ·
-    flatpak/flatpak-builder-tools](https://github.com/flatpak/flatpak-builder-tools/pull/382)
-  - Until these PRs are accepted you can use my fork that combines them in
-    branch `npm+gitrefs`:
-    `git clone -b npm+gitrefs git@github.com:Ian2020/flatpak-builder-tools.git`
+- `flatpak-node-generator` from [flatpak-builder-tools/node](https://github.com/flatpak/flatpak-builder-tools/tree/master/node).
+  My PR (which adds support for git sources) is required:
+  [\[node\] support git sources #382](https://github.com/flatpak/flatpak-builder-tools/pull/382).
+  Grab it with:  `git clone -b gitrefs git@github.com:Ian2020/flatpak-builder-tools.git`
 - Before you start make a note of what version of OnlyKey-App you're building
   and what version of NWJS it uses.
 
@@ -107,9 +100,10 @@ Steps:
     run `npm install` to generate one (the above step may have already generated
     it though).
 
-  - Run `flatpak-node-generator npm package-lock.json`. The project uses poetry
-    so with that installed you can run `poetry install` then use the resulting
-    `.venv` virtual environment to run it.
+  - Run `flatpak-node-generator npm package-lock.json`. The
+    flatpak-node-generator project uses poetry so install poetry if needed
+    also. You can then run `poetry install` and use the resulting `.venv`
+    virtual environment to run it.
 
   - Take the resulting file `generated-sources.json` and copy into your working dir
     of this repo.

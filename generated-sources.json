@@ -1,6 +1,13 @@
 [
     {
         "type": "file",
+        "url": "https://codeload.github.com/Ian2020/npm-installer/tar.gz/8e1575a4abf16901924a6146835334ddeaa17b14",
+        "sha512": "bdcea476b685d33924c3e4c1459e63ca43f603d0ba20d7ba41a6dec7f3a130bea331326f729161110547bbc51925285827eb2afe1d28c5be156a1692bf361b0b",
+        "dest-filename": "a476b685d33924c3e4c1459e63ca43f603d0ba20d7ba41a6dec7f3a130bea331326f729161110547bbc51925285827eb2afe1d28c5be156a1692bf361b0b",
+        "dest": "flatpak-node/npm-cache/_cacache/content-v2/sha512/bd/ce"
+    },
+    {
+        "type": "file",
         "url": "https://registry.npmjs.org/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz",
         "sha512": "d588ecd92bccf137e5111fce0f770e8e15963996f9f00dadef0a44d92f577c161388897e5c58501b66e3cb83eed48f8402508d533443603745c056142af5dc20",
         "dest-filename": "ecd92bccf137e5111fce0f770e8e15963996f9f00dadef0a44d92f577c161388897e5c58501b66e3cb83eed48f8402508d533443603745c056142af5dc20",
@@ -6406,6 +6413,12 @@
     },
     {
         "type": "inline",
+        "contents": "72d5e36d93648a3097f66b664d1e3f3a107712f3\t{\"key\": \"make-fetch-happen:request-cache:https://codeload.github.com/Ian2020/npm-installer/tar.gz/8e1575a4abf16901924a6146835334ddeaa17b14\", \"integrity\": \"sha512-vc6kdraF0zkkw+TBRZ5jykP2A9C6INe6Qabex/OhML6jMTJvcpFhEQVHu8UZJShYJ+sq/h0oxb4VahaSvzYbCw==\", \"time\": 0, \"size\": 32371, \"metadata\": {\"url\": \"https://codeload.github.com/Ian2020/npm-installer/tar.gz/8e1575a4abf16901924a6146835334ddeaa17b14\", \"reqHeaders\": {}, \"resHeaders\": {}}}",
+        "dest-filename": "fda3301ac4e908335eff2d6919e00999088896ab6a24639472c300970147",
+        "dest": "flatpak-node/npm-cache/_cacache/index-v5/8d/2b"
+    },
+    {
+        "type": "inline",
         "contents": "72f6a34a2fee1e9a53686893573194036c821b84\t{\"key\": \"make-fetch-happen:request-cache:https://registry.npmjs.org/asn1/-/asn1-0.2.6.tgz\", \"integrity\": \"sha512-ix/FxPn0MDjeyJ7i/yoHGFt/EX6LyNbxSEhPPXODPL+KB0VPk86UYfL0lMdy+KCnv+fmvIzySwaK5COwqVbWTQ==\", \"time\": 0, \"size\": 5977, \"metadata\": {\"url\": \"https://registry.npmjs.org/asn1/-/asn1-0.2.6.tgz\", \"reqHeaders\": {}, \"resHeaders\": {}}}",
         "dest-filename": "69ed43ac332712235b5c14293a8fa232e8f1567e37ceea47341c4af3df4c",
         "dest": "flatpak-node/npm-cache/_cacache/index-v5/cd/72"
@@ -8705,23 +8718,6 @@
     {
         "type": "script",
         "commands": [
-            "$FLATPAK_BUILDER_BUILDDIR/flatpak-node/patch.sh"
-        ],
-        "dest-filename": "patch-all.sh",
-        "dest": "flatpak-node"
-    },
-    {
-        "type": "script",
-        "commands": [
-            "jq --arg buildroot \"$FLATPAK_BUILDER_BUILDDIR\" --argjson data '{\"https://git@github.com/Ian2020/npm-installer.git#8e1575a4abf16901924a6146835334ddeaa17b14\": \"flatpak-node/git-packages/nw-8e1575a4abf16901924a6146835334ddeaa17b14#8e1575a4abf16901924a6146835334ddeaa17b14\", \"https://git@github.com/Ian2020/npm-installer.git\": \"flatpak-node/git-packages/nw-8e1575a4abf16901924a6146835334ddeaa17b14#8e1575a4abf16901924a6146835334ddeaa17b14\", \"git+https://git@github.com/Ian2020/npm-installer.git#8e1575a4abf16901924a6146835334ddeaa17b14\": \"flatpak-node/git-packages/nw-8e1575a4abf16901924a6146835334ddeaa17b14#8e1575a4abf16901924a6146835334ddeaa17b14\", \"git+https://git@github.com/Ian2020/npm-installer.git\": \"flatpak-node/git-packages/nw-8e1575a4abf16901924a6146835334ddeaa17b14#8e1575a4abf16901924a6146835334ddeaa17b14\"}' 'walk(    if type == \"object\"    then        to_entries | map(            if (.value | type == \"string\") and $data[.value]            then .value = \"git+file://\\($buildroot)/\\($data[.value])\"            else .            end        ) | from_entries    else .    end)' $FLATPAK_BUILDER_BUILDDIR/onlykey-app/package.json > $FLATPAK_BUILDER_BUILDDIR/onlykey-app/package.json.new",
-            "mv $FLATPAK_BUILDER_BUILDDIR/onlykey-app/package.json{.new,}"
-        ],
-        "dest-filename": "patch.sh",
-        "dest": "flatpak-node"
-    },
-    {
-        "type": "script",
-        "commands": [
             "version=$(node --version | sed \"s/^v//\")",
             "nodedir=$(dirname \"$(dirname \"$(which node)\")\")",
             "mkdir -p \"flatpak-node/cache/node-gyp/$version\"",
@@ -8734,7 +8730,6 @@
     {
         "type": "shell",
         "commands": [
-            "FLATPAK_BUILDER_BUILDDIR=$PWD flatpak-node/patch-all.sh",
             "bash flatpak-node/setup_sdk_node_headers.sh"
         ]
     }
