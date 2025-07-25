@@ -73,21 +73,30 @@ built by this repo.
 Prerequisites:
 
 - Node and npm
+
 - `flatpak-node-generator` from [flatpak-builder-tools/node](https://github.com/flatpak/flatpak-builder-tools/tree/master/node).
-  My PR (which adds support for git sources) is required:
-  [\[node\] support git sources #382](https://github.com/flatpak/flatpak-builder-tools/pull/382).
-  Grab it with:  `git clone -b gitrefs git@github.com:Ian2020/flatpak-builder-tools.git`
+
+  A PR (which adds support for git sources) is required:
+  [[node] support git sources #382](https://github.com/flatpak/flatpak-builder-tools/pull/382).
+  and has now (24th July 2025) been merged 🎉 Ensure you have a version that
+  includes that change. The simplest way to guarantee that it to install via
+  pipx and thus get latest:
+  `pipx install git+https://github.com/flatpak/flatpak-builder-tools.git#subdirectory=node`
+
 - Before you start make a note of what version of OnlyKey-App you're building
-  and what version of NWJS it uses.
+  and what version of NWJS it uses by looking in
+  [package.json](https://github.com/trustcrypto/OnlyKey-App/blob/master/package.json)
+  at the `nw` dependency.
 
 Steps:
 
 - Checkout [trustcrypto/OnlyKey-App](https://github.com/trustcrypto/OnlyKey-App/)
-  at the relevant tag for the new version you want to build.
+  at the relevant tag for the new version you want to build and change into
+  its dir.
 
   - If we still need to use our npm-installer fork (see outstanding issues
-    below) we need to replace the nw dependency with the correct commit or of
-    our fork. This depends on the version of NWJS needed and work may required
+    below) we need to replace the nw dependency with the correct commit of
+    our fork. This depends on the version of NWJS needed and work may be required
     in this repo first to bring it up to date also. Here's the right command for
     NWJS 0.71.1:
 
@@ -95,6 +104,8 @@ Steps:
     npm uninstall nw
     npm install git+https://git@github.com/Ian2020/npm-installer.git#8e1575a4abf16901924a6146835334ddeaa17b14
     ```
+
+    This will alter the `package.json`, replacing the dep with our custom one.
 
   - If there is no `package-lock.json` in the repo (an outstanding issue below)
     run `npm install` to generate one (the above step may have already generated
@@ -175,25 +186,9 @@ The first two relate to flatpak's requirement to build without network access.
    This forces us to patch `package.json` and `package-lock.json` to point to
    our fork as an npm git dependency until the issue is resolved upstream.
 
-The next are around the use of the
-[flatpak-builder-tools/node](https://github.com/flatpak/flatpak-builder-tools/tree/master/node)
-the generate sources for the flatpak manifest.
-
-3. The files `generated-sources.json` and `generated-sources-nw.json` were
-   created with
-   [flatpak-builder-tools/node](https://github.com/flatpak/flatpak-builder-tools/tree/master/node)
-   however this tool has a bug
-   [#377](https://github.com/flatpak/flatpak-builder-tools/issues/377) that means
-   the wrong list of sources is generated. We have submitted a PR [#378](https://github.com/flatpak/flatpak-builder-tools/pull/378)
-   and once accepted we won't have to run a local fork.
-1. A second issue with
-   [flatpak-builder-tools/node](https://github.com/flatpak/flatpak-builder-tools/tree/master/node)
-   is that is does not support the git dependency we use in (2) above. We have a
-   fix for that: [#382](https://github.com/flatpak/flatpak-builder-tools/pull/382)
-
 The final minor issue is around OnlyKey App's build process:
 
-5. The OnlyKey gulp linux release task creates a .deb in a tmp dir and then
+3. The OnlyKey gulp linux release task creates a .deb in a tmp dir and then
    deletes all the artifacts. We need to skip the deb creation (as it fails in
    our flatpak environment) and we need the artifacts to finish building the
    flatpak. Perhaps in future we could have a dedicated flatpak release task in
