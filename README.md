@@ -2,22 +2,31 @@ This is an unofficial flatpak build of the [OnlyKey-App](https://github.com/trus
 
 ## Table of Contents
 
+<!--toc:start-->
+
 - [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
 - [Updating](#updating)
+  - [Runtime Version](#runtime-version)
+  - [Upstream App](#upstream-app)
 - [Outstanding Issues](#outstanding-issues)
 - [Known Issues](#known-issues)
 - [License](#license)
+
+<!--toc:end-->
 
 ## Background
 
 I was keen to get a flatpak for the Onlykey App and it's an outstanding issue on
 the app's repo: [#105](https://github.com/trustcrypto/OnlyKey-App/issues/105)
+The aim is to get this app onto [Flathub](https://flathub.org/en), however that won't
+be possible until OnlyKey themselves update to a more recent version of node
+(see updating [runtime version](#runtime-version) below).
 
 ## Install
 
-Prerequistes:
+Prerequisites:
 
 - flatpak-builder
 - Base runtime, SDK and node extension from flathub:
@@ -66,6 +75,18 @@ Linux](https://docs.onlykey.io/linux.html). In particular make sure you have
 setup the UDEV rule.
 
 ## Updating
+
+### Runtime Version
+
+- We are stuck on the end-of-life `23.08` runtime until OnlyKey update beyond
+  node 18 as the `node18` runtime extension is no longer available in versions
+  after that.
+- Change `runtime-version` in `io.onlykey.OnlyKey-App.yaml` to latest
+  available, this command with show all `flatpak install flathub org.freedesktop.Platform`
+- Build as described in [install](#install) above and test.
+- Update prerequisites above.
+
+### Upstream App
 
 These instructions are for updating the version of OnlyKey-App in the flatpak
 built by this repo.
@@ -167,6 +188,14 @@ Steps:
 We had to work around a number of issues to get this flatpak build working. Over
 time we might be able to simplify the build if these are addressed.
 
+1. As mentioned above OnlyKey uses an old version of node that is no longer
+   supported by any recent flatpak runtimes. This blocks us from submitting the
+   app to flathub as per their
+   [requirements](https://docs.flathub.org/docs/for-app-authors/requirements#end-of-life-dependency-policy):
+
+> Submissions using an end-of-life runtime, extension or baseapp will not be
+> accepted.
+
 1. Nwjs's `npm-installer` supports offline install however it has a bug:
    [#77](https://github.com/nwjs/npm-installer/issues/77). There is a fix but
    it's unreleased. We need nwjs to release this
@@ -208,16 +237,10 @@ For the future:
 
   ...but it seems to have no ill effect.
 
-- NPM issues some warnings but these need to be addressed upstream:
+- NPM issues a lot of deprecation warnings but these need to be addressed upstream.
 
-  ```log
-  npm WARN config production Use `--omit=dev` instead.
-  npm WARN deprecated har-validator@5.1.5: this library is no longer supported
-  npm WARN deprecated uuid@3.4.0: Please upgrade  to version 7 or higher. Older versions may use Math.random() in certain circumstances, which is known to be problematic. See https://v8.dev/blog/math-random for details.
-  npm WARN deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
-  ```
-
-  ...but it still seems to work.
+- Flatpak-builder complains:
+  `No appstream data for app/io.onlykey.OnlyKey-App/x86_64/master: No such file or directory: /files/share/app-info`
 
 ## License
 
