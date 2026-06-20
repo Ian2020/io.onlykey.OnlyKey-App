@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v5.5.0+3]
+
 ### Fixed
 
 - Upstream OnlyKey-App are now including the `package-lock.json` so we do not need to
