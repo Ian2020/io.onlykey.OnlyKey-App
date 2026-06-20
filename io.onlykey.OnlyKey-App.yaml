@@ -66,8 +66,9 @@ modules:
     sources:
       - type: git
         url: https://github.com/trustcrypto/OnlyKey-App.git
-        tag: v5.5.0
-        commit: 5401c2966638d04c19035fff85e95bfd3bce5511
+        # Waiting for OnlyKey to tag a new version that includes package-lock.json
+        # tag: v5.5.0
+        commit: b8918cec80f5feda50c24a0aec3d6fb914ea8481
         # Checkout into a subdirectory so we can copy the whole thing to /app.
         dest: onlykey-app
       # Patching package-lock.json must come before generated-sources as that

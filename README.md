@@ -77,7 +77,7 @@ Prerequisites:
 - `flatpak-node-generator` from [flatpak-builder-tools/node](https://github.com/flatpak/flatpak-builder-tools/tree/master/node).
 
   A PR (which adds support for git sources) is required:
-  [[node] support git sources #382](https://github.com/flatpak/flatpak-builder-tools/pull/382).
+  [[node] support git sources #382](https://github.com/flatpak/flatpak-builder-tools/pull/382)
   and has now (24th July 2025) been merged 🎉 Ensure you have a version that
   includes that change. The simplest way to guarantee that it to install via
   pipx and thus get latest:
@@ -107,9 +107,8 @@ Steps:
 
     This will alter the `package.json`, replacing the dep with our custom one.
 
-  - If there is no `package-lock.json` in the repo (an outstanding issue below)
-    run `npm install` to generate one (the above step may have already generated
-    it though).
+  - Run `npm install` to update `package-lock.json`, unless the above step has
+    already done so.
 
   - Run `flatpak-node-generator npm package-lock.json`. The
     flatpak-node-generator project uses poetry so install poetry if needed
@@ -118,9 +117,6 @@ Steps:
 
   - Take the resulting file `generated-sources.json` and copy into your working dir
     of this repo.
-
-    - Replace any occurrences of `FLATPAK_BUILDER_BUILDDIR/package` with
-      `FLATPAK_BUILDER_BUILDDIR/onlykey-app/package`.
 
   - Create patch files for `package.json` and `package-lock.json` using `git diff package.json | cat` or similar and copy into the working dir of this
     repo (replacing `package.json.patch` and `package-lock.json.patch`).
@@ -146,7 +142,9 @@ Steps:
 
 - Update the tag of the OnlyKey-App repo we use in source
   in the manifest and anywhere else the version number appears in there:
-  `io.onlykey.OnlyKey-App.yaml`
+  `io.onlykey.OnlyKey-App.yaml`. Since June 2026 we are obliged to use a
+  commit hash only as OnlyKey have not yet tagged a version that includes
+  the commit which added `package-lock.json`.
 
 - Now run the steps from the "Install" section above and hope for a successful
   build.
@@ -169,12 +167,6 @@ Steps:
 We had to work around a number of issues to get this flatpak build working. Over
 time we might be able to simplify the build if these are addressed.
 
-The first two relate to flatpak's requirement to build without network access.
-
-1. The OnlyKey-App repo does not include a `package-lock.json` which is
-   essential for offline builds. If this could be added upstream we would no
-   longer need to patch it in the manifest.
-
 1. Nwjs's `npm-installer` supports offline install however it has a bug:
    [#77](https://github.com/nwjs/npm-installer/issues/77). There is a fix but
    it's unreleased. We need nwjs to release this
@@ -186,9 +178,7 @@ The first two relate to flatpak's requirement to build without network access.
    This forces us to patch `package.json` and `package-lock.json` to point to
    our fork as an npm git dependency until the issue is resolved upstream.
 
-The final minor issue is around OnlyKey App's build process:
-
-3. The OnlyKey gulp linux release task creates a .deb in a tmp dir and then
+1. The OnlyKey gulp linux release task creates a .deb in a tmp dir and then
    deletes all the artifacts. We need to skip the deb creation (as it fails in
    our flatpak environment) and we need the artifacts to finish building the
    flatpak. Perhaps in future we could have a dedicated flatpak release task in
@@ -196,6 +186,11 @@ The final minor issue is around OnlyKey App's build process:
 
 For the future:
 
+- We want to get back onto referencing official tags of OnlyKey, when they next
+  make an official release after June 2026.
+- The flatpak is not built using the exact same dependencies as the official
+  app, due the `nwjs` issue above. This will be fixed once OnlyKey update this
+  dependency.
 - We're not really using `flatpak-node-generator`'s nwjs support, by which it
   adds a couple extra sources to download and extract nwjs into a known
   location in `generated-sources.json`.

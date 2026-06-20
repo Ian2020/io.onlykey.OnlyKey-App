@@ -7,9 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Upstream OnlyKey-App are now including the `package-lock.json` so we do not need to
+  generate it ourselves. However we still have to patch it due to the `nwjs` issue.
+  They have not tagged this change so we have to reference it by commit hash for now.
+
+### Changed
+
+- The current version of `flatpak-node-generator` does not seem to require us to
+  alter paths in the `generated-sources.json` file, so those instructions removed
+  from `README.md`.
+
 ## [v5.5.0+2]
 
-## Fixed
+### Fixed
 
 - [ssh: Could not resolve hostname file: Temporary failure in name resolution](https://github.com/Ian2020/io.onlykey.OnlyKey-App/issues/4)
   The May 2024 update to `org.freedesktop.Sdk.Extension.node18` saw npm upgraded
@@ -20,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   app.desktop launcher now specifies the correct version, which refers to the
   desktop spec rather than app itself.
 
-## Changed
+### Changed
 
 - Swap order of the generated-sources. They overwrite each others' patches and we
   more likely to want to see those of OnlyKey-App, so they should come last.
