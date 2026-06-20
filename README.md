@@ -19,7 +19,7 @@ This is an unofficial flatpak build of the [OnlyKey-App](https://github.com/trus
 ## Background
 
 I was keen to get a flatpak for the Onlykey App and it's an outstanding issue on
-the app's repo: [#105](https://github.com/trustcrypto/OnlyKey-App/issues/105)
+the app's repo: [#105](https://github.com/trustcrypto/OnlyKey-App/issues/105).
 The aim is to get this app onto [Flathub](https://flathub.org/en), however that won't
 be possible until OnlyKey themselves update to a more recent version of node
 (see updating [runtime version](#runtime-version) below).
